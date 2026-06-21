@@ -3,9 +3,9 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  base:'/Temu-/',
   server: {
     host: "0.0.0.0",
-    port: 5173,
-    base:'/Temu-/'
+    port: 5173, 
   },
 });
