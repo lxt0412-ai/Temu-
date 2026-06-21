@@ -1,4 +1,4 @@
-import { Copy, ImageIcon, WandSparkles } from "lucide-react";
+import { CheckCircle2, Copy, ImageIcon, LayoutPanelLeft, Store, WandSparkles } from "lucide-react";
 import type { GenerationResult, PromptPlan, PromptPlanId } from "../types";
 
 interface GenerationPromptPanelProps {
@@ -10,6 +10,39 @@ interface GenerationPromptPanelProps {
   onBuildPlans: () => void;
   onGenerateImage: (plan: PromptPlan) => void;
 }
+
+const planDisplayMeta: Record<
+  PromptPlanId,
+  {
+    title: string;
+    usage: string;
+    features: string[];
+    difference: string;
+    badgeClassName: string;
+  }
+> = {
+  A: {
+    title: "方案 A：平台主图方案",
+    usage: "适合 Temu 商品主图",
+    features: ["商品主体突出", "白底或浅色背景", "少道具", "高点击率", "适合商品列表页"],
+    difference: "与竞品图的差异点：去掉复杂背景、装饰道具和密集信息区，改为原创浅色主图表达，只突出用户商品主体。",
+    badgeClassName: "bg-mint text-white"
+  },
+  B: {
+    title: "方案 B：生活场景方案",
+    usage: "适合商品轮播图 / 详情页",
+    features: ["原创生活化场景", "强调使用场景", "展示商品价值", "不复刻竞品背景"],
+    difference: "与竞品图的差异点：重新设计生活场景、背景材质、道具组合和镜头距离，只保留抽象使用意图。",
+    badgeClassName: "bg-amber text-ink"
+  },
+  C: {
+    title: "方案 C：卖点表达方案",
+    usage: "适合详情页卖点图",
+    features: ["结构化表达核心卖点", "可使用原创文字区域", "不复制竞品文案和排版", "避免夸大宣传"],
+    difference: "与竞品图的差异点：重建卖点信息结构，改变文字区位置、层级、图标样式和视觉节奏。",
+    badgeClassName: "bg-coral text-white"
+  }
+};
 
 export function GenerationPromptPanel({
   plans,
@@ -28,8 +61,11 @@ export function GenerationPromptPanel({
     <div className="rounded-lg border border-line bg-white p-4 shadow-soft">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-semibold text-ink">多方案生成 Prompt</h2>
-          <p className="mt-1 text-sm text-ink/60">一次生成 3 个原创合规方向，每个方案都可以单独复制和 mock 生图。</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-mint">Creative Options</p>
+          <h2 className="mt-2 text-base font-semibold text-ink">多方案商品图生成模块</h2>
+          <p className="mt-1 text-sm text-ink/60">
+            将同一商品主体拆成平台主图、生活场景、卖点表达三类方案，展示 AI 产品从策略到素材的生成闭环。
+          </p>
         </div>
         <button
           type="button"
@@ -47,14 +83,20 @@ export function GenerationPromptPanel({
           {plans.map((plan) => {
             const result = generatedResults[plan.id];
             const isGenerating = generatingPlanId === plan.id;
+            const meta = planDisplayMeta[plan.id];
 
             return (
-              <div key={plan.id} className="rounded-lg border border-line bg-field p-4">
+              <article key={plan.id} className="rounded-lg border border-line bg-field p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.12em] text-mint">方案 {plan.id}</div>
-                    <h3 className="mt-1 text-lg font-semibold text-ink">{plan.title}</h3>
-                    <p className="mt-1 text-sm leading-6 text-ink/65">适合用途：{plan.usage}</p>
+                  <div className="flex min-w-0 gap-3">
+                    <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-base font-bold ${meta.badgeClassName}`}>
+                      {plan.id}
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.12em] text-mint">Portfolio generation plan</div>
+                      <h3 className="mt-1 text-lg font-semibold text-ink">{meta.title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-ink/65">使用场景：{meta.usage}</p>
+                    </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button
@@ -85,8 +127,33 @@ export function GenerationPromptPanel({
                   </div>
                 </div>
 
-                <div className="mt-4 rounded-md border border-line bg-white p-3">
-                  <div className="text-sm font-semibold text-ink">中文创意说明</div>
+                <div className="mt-4 grid gap-3 lg:grid-cols-[0.95fr_1.05fr]">
+                  <div className="rounded-md border border-line bg-white p-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-ink">
+                      <Store size={16} className="text-mint" />
+                      方案特点
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {meta.features.map((feature) => (
+                        <span key={feature} className="inline-flex items-center gap-1 rounded-md border border-line bg-field px-2 py-1 text-sm text-ink/72">
+                          <CheckCircle2 size={14} className="text-mint" />
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-md border border-line bg-white p-3">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-ink">
+                      <LayoutPanelLeft size={16} className="text-mint" />
+                      与竞品图的差异点
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-ink/70">{meta.difference}</p>
+                  </div>
+                </div>
+
+                <div className="mt-3 rounded-md border border-line bg-white p-3">
+                  <div className="text-sm font-semibold text-ink">创意说明</div>
                   <p className="mt-1 text-sm leading-6 text-ink/70">{plan.creativeSummary}</p>
                 </div>
 
@@ -111,19 +178,39 @@ export function GenerationPromptPanel({
 
                 <div className="mt-3 grid gap-3 lg:grid-cols-2">
                   <div>
-                    <div className="mb-2 text-sm font-semibold text-ink">Positive Prompt</div>
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <div className="text-sm font-semibold text-ink">Positive Prompt</div>
+                      <button
+                        type="button"
+                        onClick={() => copyText(plan.positivePrompt)}
+                        className="inline-flex items-center gap-1 rounded-md border border-line bg-white px-2 py-1 text-xs font-semibold text-ink transition hover:border-mint hover:text-mint"
+                      >
+                        <Copy size={13} />
+                        复制
+                      </button>
+                    </div>
                     <pre className="max-h-[320px] overflow-auto whitespace-pre-wrap rounded-md border border-line bg-white p-3 text-xs leading-5 text-ink/75">
                       {plan.positivePrompt}
                     </pre>
                   </div>
                   <div>
-                    <div className="mb-2 text-sm font-semibold text-ink">Negative Prompt</div>
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <div className="text-sm font-semibold text-ink">Negative Prompt</div>
+                      <button
+                        type="button"
+                        onClick={() => copyText(plan.negativePrompt)}
+                        className="inline-flex items-center gap-1 rounded-md border border-line bg-white px-2 py-1 text-xs font-semibold text-ink transition hover:border-mint hover:text-mint"
+                      >
+                        <Copy size={13} />
+                        复制
+                      </button>
+                    </div>
                     <pre className="max-h-[320px] overflow-auto whitespace-pre-wrap rounded-md border border-line bg-ink p-3 text-xs leading-5 text-white">
                       {plan.negativePrompt}
                     </pre>
                   </div>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

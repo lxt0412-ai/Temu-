@@ -122,8 +122,8 @@ const planDefinitions: Array<{
 }> = [
   {
     id: "A",
-    title: "方案 A：主图风格",
-    usage: "适合作为 Temu 商品主图、搜索流首图或广告入口图。",
+    title: "方案 A：平台主图方案",
+    usage: "适合 Temu 商品主图。",
     planDirection:
       "Use a white or very light background. Make the product subject large, crisp, centered or slightly offset with strong visual priority. Keep information clean. Do not use complex props. Use subtle shadow and clean product photography polish.",
     difference:
@@ -133,8 +133,8 @@ const planDefinitions: Array<{
   },
   {
     id: "B",
-    title: "方案 B：场景图风格",
-    usage: "适合作为详情页、轮播图、广告素材或场景化承接图。",
+    title: "方案 B：生活场景方案",
+    usage: "适合商品轮播图 / 详情页。",
     planDirection:
       "Place the product into an original lifestyle scene that communicates how the item is used. Use a different background, different props, different camera framing, and a believable everyday environment. Keep the product clearly visible.",
     difference:
@@ -144,8 +144,8 @@ const planDefinitions: Array<{
   },
   {
     id: "C",
-    title: "方案 C：卖点图风格",
-    usage: "适合作为卖点图、详情页功能说明图或轮播第二屏。",
+    title: "方案 C：卖点表达方案",
+    usage: "适合详情页卖点图。",
     planDirection:
       "Express the core selling points in an original way. A simple clean text area or generic icon-like labels may be used, but the wording, layout, hierarchy, position, and rhythm must be newly designed. Avoid exaggerated or unverifiable claims.",
     difference:

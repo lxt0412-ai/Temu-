@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { CheckCircle2, CircleDashed } from "lucide-react";
 import { ImageUploader } from "./components/ImageUploader";
 import { ProductPreview } from "./components/ProductPreview";
 import { CompetitorAnalysisPanel } from "./components/CompetitorAnalysisPanel";
 import { ComplianceRiskPanel } from "./components/ComplianceRiskPanel";
 import { GenerationPromptPanel } from "./components/GenerationPromptPanel";
+import { HeroSection } from "./components/HeroSection";
+import { BusinessValueSection } from "./components/BusinessValueSection";
+import { AIWorkflowSection } from "./components/AIWorkflowSection";
+import { PortfolioExplanationSection } from "./components/PortfolioExplanationSection";
+import { PromptExplainabilitySection } from "./components/PromptExplainabilitySection";
+import { ProductMetricsSection } from "./components/ProductMetricsSection";
 import {
   getImageGenerationProviderMode,
   generateProductImage
@@ -191,36 +196,19 @@ function App() {
 
   return (
     <main className="min-h-screen bg-field">
-      <section className="border-b border-line bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-mint">Temu seller AI workflow</p>
-              <h1 className="mt-2 text-3xl font-bold tracking-normal text-ink sm:text-4xl">
-                Temu 商品图安全生成工具
-              </h1>
-              <p className="mt-3 max-w-3xl text-base leading-7 text-ink/68">
-                基于商品主体 + 爆款图抽象策略，生成原创合规商品图
-              </p>
-              <div className="mt-4 inline-flex flex-wrap items-center gap-2 rounded-md border border-line bg-field px-3 py-2 text-sm text-ink/70">
-                <span className="font-semibold text-ink">当前模式：{isMockMode ? "Mock" : "Real API"}</span>
-                <span>抠图：{providerModes.segmentation}</span>
-                <span>视觉分析：{providerModes.vision}</span>
-                <span>生图：{providerModes.imageGeneration}</span>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:min-w-[520px]">
-              {flowSteps.map((step) => (
-                <div
-                  key={step.label}
-                  className="flex items-center gap-2 rounded-md border border-line bg-field px-3 py-2 text-sm text-ink/75"
-                >
-                  {step.done ? <CheckCircle2 className="text-mint" size={16} /> : <CircleDashed size={16} />}
-                  <span>{step.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+      <HeroSection flowSteps={flowSteps} isMockMode={isMockMode} providerModes={providerModes} />
+      <BusinessValueSection />
+      <AIWorkflowSection />
+      <PortfolioExplanationSection />
+      <ProductMetricsSection />
+
+      <section className="mx-auto max-w-7xl px-4 pt-2 sm:px-6 lg:px-8">
+        <div className="border-t border-line pt-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-mint">Interactive MVP</p>
+          <h2 className="mt-2 text-2xl font-bold tracking-normal text-ink">可运行商品图生成工作台</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-ink/62">
+            以下区域保留原有上传、抠图、竞品分析、合规检查、Prompt 生成和 mock 生图流程，用于现场演示完整产品闭环。
+          </p>
         </div>
       </section>
 
@@ -278,6 +266,7 @@ function App() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-10 sm:px-6 lg:px-8">
         <ComplianceRiskPanel risks={complianceResults} warning={complianceWarning} />
+        <PromptExplainabilitySection />
         <GenerationPromptPanel
           plans={promptPlans}
           canBuildPlans={canGenerate}
