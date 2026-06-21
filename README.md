@@ -145,3 +145,4 @@ VITE_VISION_PROVIDER=openai
 3. 保持页面和业务组件不变，只让 provider 返回现有统一类型。
 
 当前项目不会在前端保存真实 API Key。接入真实商业 API 时，建议新增后端 API route 或 serverless function，由后端读取密钥并调用模型服务。
+test deploy
